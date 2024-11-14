@@ -15,6 +15,6 @@
     "forceConsistentCasingInFileNames": true
   },
   "lib": ["es2020", "es2020.array"],
-  "include": ["src/**/*", "src.tests/**/*", "src/walkSync.ts", "index.ts"],
+  "include": ["src/**/*", "src.tests/**/*", "index.ts"],
   "exclude": ["node_modules"]
 }
