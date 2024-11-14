@@ -1,9 +1,39 @@
 {
   "name": "@puppedo/walk-sync",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Synchronously walks through a directory and its subdirectories, returning an array of file paths.",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "files": [
+    "./dist/index.js",
+    "./dist/index.d.ts"
+  ],
+  "author": "Starodubov Sergey <4analit@gmail.com>",
+  "license": "ISC",
+  "keywords": [
+    "file system",
+    "files",
+    "directory",
+    "walk",
+    "traverse",
+    "recursive",
+    "synchronous",
+    "sync",
+    "path",
+    "paths",
+    "filesystem",
+    "node.js",
+    "nodejs",
+    "utility",
+    "helper",
+    "tool",
+    "io",
+    "input/output",
+    "file-walker",
+    "directory-walker",
+    "folder",
+    "folders"
+  ],
   "scripts": {
     "build": "webpack && api-extractor run --local",
     "watch": "webpack --watch",
@@ -11,12 +41,6 @@
     "lint": "eslint",
     "test": "jest"
   },
-  "files": [
-    "./dist/index.js",
-    "./dist/index.d.ts"
-  ],
-  "author": "Starodubov Sergey <4analit@gmail.com>",
-  "license": "ISC",
   "devDependencies": {
     "@babel/cli": "7.25.9",
     "@babel/core": "7.26.0",
