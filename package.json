@@ -1,6 +1,6 @@
 {
   "name": "@puppedo/walk-sync",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Synchronously walks through a directory and its subdirectories, returning an array of file paths.",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
