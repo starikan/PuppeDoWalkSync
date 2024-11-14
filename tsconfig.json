@@ -6,11 +6,15 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "outDir": "dist",
-    // "sourceMap": true,
+    "sourceMap": true,
+    "removeComments": false,
     "esModuleInterop": true,
-    "removeComments": true
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "lib": ["es2020", "es2020.array"],
-  "include": ["src/**/*", "src.tests/**/*", "src/index.ts"],
+  "include": ["src/**/*", "src.tests/**/*", "src/walkSync.ts", "index.ts"],
   "exclude": ["node_modules"]
 }

@@ -5,9 +5,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   cache: true,
   entry: {
-    main: './src/index.ts',
+    main: './index.ts',
   },
-  // devtool: 'source-map',
+  devtool: 'source-map',
   mode: 'production',
   target: 'node',
   node: {
@@ -19,7 +19,12 @@ module.exports = {
       {
         test: /\.(js|jsx|tsx|ts)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        use: {
+          loader: 'ts-loader',
+          options: {
+            configFile: path.resolve(__dirname, 'tsconfig.json'),
+          },
+        },
       },
     ],
   },

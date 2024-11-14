@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { walkSync } from '../src';
+import { walkSync } from '../src/walkSync';
 
 describe('walkSync', () => {
   const testDir = path.join(__dirname, 'testDir');
