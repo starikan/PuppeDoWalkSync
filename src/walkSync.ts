@@ -11,8 +11,42 @@ import fs from 'fs';
  *   - `ignoreFolders`: An array of folder names to ignore. For example: `['node_modules', '.git']`.
  *   - `includeExtensions`: An array of file extensions to include. For example: `['.ts', '.js']`.
  *   - `ignoreFiles`: An array of file names to ignore. For example: `['.eslintrc.js', 'tsconfig.json']`.
- *   - `depth`: The maximum depth to walk.  A value of `1` will only include files directly within the `dir` directory.
+ *   - `depth`: The maximum depth to walk. A value of `1` will only include files directly within the `dir` directory. For example: `{ depth: 1 }`.
  * @returns - An array of file paths.
+ *
+ * @example
+ * ```
+ * // Basic usage:
+ * const files = walkSync('./path/to/directory');
+ * console.log(files);
+ * ```
+ *
+ * @example
+ * ```
+ * // Ignoring folders:
+ * const files = walkSync('./path/to/directory', {
+ *   ignoreFolders: ['node_modules', 'dist'],
+ * });
+ * console.log(files);
+ * ```
+ *
+ * @example
+ * ```
+ * // Filtering by extension:
+ * const tsFiles = walkSync('./path/to/directory', {
+ *   includeExtensions: ['.ts'],
+ * });
+ * console.log(tsFiles);
+ * ```
+ *
+ * @example
+ * ```
+ * // Limiting recursion depth:
+ * const files = walkSync('./path/to/directory', {
+ *   depth: 1, // Only files directly in the directory
+ * });
+ * console.log(files);
+ * ```
  */
 export const walkSync = (
   dir: string,
