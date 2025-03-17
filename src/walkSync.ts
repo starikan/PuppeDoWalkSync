@@ -71,27 +71,57 @@ export const walkSync = (
     ignoreFiles: [],
   },
 ): string[] => {
-  const baseDir = path.basename(dir);
-  if (!fs.existsSync(dir) || options.ignoreFolders?.includes(baseDir)) {
+  // Handle invalid directory input
+  if (!dir || typeof dir !== 'string') {
     return [];
   }
+
+  // Create a local copy of options with defaults
+  const opts = options || { ignoreFolders: [], ignoreFiles: [] };
+
+  // Ensure array properties are actually arrays
+  if (opts.ignoreFolders && !Array.isArray(opts.ignoreFolders)) {
+    opts.ignoreFolders = [];
+  }
+  if (opts.ignoreFiles && !Array.isArray(opts.ignoreFiles)) {
+    opts.ignoreFiles = [];
+  }
+  if (opts.includeExtensions && !Array.isArray(opts.includeExtensions)) {
+    opts.includeExtensions = [];
+  }
+  if (opts.onlyFiles && !Array.isArray(opts.onlyFiles)) {
+    opts.onlyFiles = [];
+  }
+
+  const baseDir = path.basename(dir);
+  if (!fs.existsSync(dir) || opts.ignoreFolders?.includes(baseDir)) {
+    return [];
+  }
+
+  // TODO: 2025-03-17 S.Starodubov убрать дублирующую проверку ниже
+  // Handle NaN or negative depth
+  if (opts.depth !== undefined && (Number.isNaN(opts.depth) || opts.depth < 0)) {
+    return [];
+  }
+
   if (!fs.statSync(dir).isDirectory()) {
     return [dir];
   }
+
   const dirs = fs
     .readdirSync(dir)
     .map((f) => {
-      if (options.depth === undefined || options.depth > 0) {
-        return walkSync(path.join(dir, f), { ...options, depth: options.depth ? options.depth - 1 : undefined });
+      if (opts.depth === undefined || opts.depth > 0) {
+        return walkSync(path.join(dir, f), { ...opts, depth: opts.depth ? opts.depth - 1 : undefined });
       }
       return [];
     })
     .flat()
-    .filter((v) => !options.ignoreFiles?.some((s) => v.endsWith(s)))
-    .filter((v) => (options.includeExtensions ? options.includeExtensions.includes(path.parse(v).ext) : true))
+    .filter((v) => !opts.ignoreFiles?.some((s) => v.endsWith(s)))
+    .filter((v) => (opts.includeExtensions?.length ? opts.includeExtensions.includes(path.parse(v).ext) : true))
     .filter((v) => {
-      if (options?.onlyFiles?.length) {
-        return options.onlyFiles.includes(path.basename(v));
+      if (opts?.onlyFiles?.length) {
+        return opts.onlyFiles.includes(path.basename(v));
       }
       return true;
     });
