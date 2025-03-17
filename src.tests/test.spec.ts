@@ -172,4 +172,83 @@ describe('walkSync', () => {
       ]),
     );
   });
+
+  // Simplified nested directory test
+  test('should handle nested directory structures', () => {
+    // Create a moderately nested structure that won't cause stack issues
+    let deepDir = path.join(testDir, 'deep');
+    fs.mkdirSync(deepDir);
+
+    // Create a chain of 5 nested directories
+    for (let i = 0; i < 5; i++) {
+      deepDir = path.join(deepDir, `level-${i}`);
+      fs.mkdirSync(deepDir);
+      fs.writeFileSync(path.join(deepDir, `file-${i}.txt`), `content-${i}`);
+    }
+
+    // Test with limited depth
+    const files = walkSync(path.join(testDir, 'deep'), { depth: 2 });
+    expect(files.length).toBeLessThan(5); // Should not get all 5 files
+
+    // Test without depth limit
+    const allFiles = walkSync(path.join(testDir, 'deep'));
+    expect(allFiles.length).toBeGreaterThanOrEqual(5); // Should get all files
+  });
+
+  // Negative tests
+  test('should handle invalid depth values', () => {
+    // Negative depth value
+    const negativeDepth = walkSync(testDir, { depth: -1 });
+    expect(negativeDepth).toEqual([]);
+
+    // NaN depth value
+    const nanDepth = walkSync(testDir, { depth: NaN });
+    expect(nanDepth).toEqual([]);
+  });
+
+  test('should handle invalid directory paths', () => {
+    // Empty string path
+    const emptyPath = walkSync('');
+    expect(emptyPath).toEqual([]);
+
+    // Null path (should throw or handle gracefully)
+    try {
+      walkSync(null as any);
+      fail('Should have thrown an error for null path');
+    } catch (error) {
+      expect(error).toBeTruthy();
+    }
+
+    // Invalid type path
+    try {
+      walkSync(123 as any);
+      fail('Should have thrown an error for number path');
+    } catch (error) {
+      expect(error).toBeTruthy();
+    }
+  });
+
+  test('should handle strange file and folder names', () => {
+    // Create files and folders with special characters
+    const specialNameDir = path.join(testDir, 'special chars!@#$');
+    fs.mkdirSync(specialNameDir);
+    fs.writeFileSync(path.join(specialNameDir, 'weird file!@#.txt'), 'content');
+
+    const files = walkSync(testDir, { depth: 3 });
+    expect(files).toContain(path.join(specialNameDir, 'weird file!@#.txt'));
+  });
+
+  test('should handle files with no extensions', () => {
+    // Create file with no extension
+    const noExtFile = path.join(testDir, 'no-extension-file');
+    fs.writeFileSync(noExtFile, 'content');
+
+    // Should find the file when no extension filter
+    const allFiles = walkSync(testDir);
+    expect(allFiles).toContain(noExtFile);
+
+    // Should not find the file when filtering for extensions
+    const extFiles = walkSync(testDir, { includeExtensions: ['.txt'] });
+    expect(extFiles).not.toContain(noExtFile);
+  });
 });
