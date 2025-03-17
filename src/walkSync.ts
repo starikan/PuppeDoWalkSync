@@ -98,7 +98,6 @@ export const walkSync = (
     return [];
   }
 
-  // TODO: 2025-03-17 S.Starodubov убрать дублирующую проверку ниже
   // Handle NaN or negative depth
   if (opts.depth !== undefined && (Number.isNaN(opts.depth) || opts.depth < 0)) {
     return [];
