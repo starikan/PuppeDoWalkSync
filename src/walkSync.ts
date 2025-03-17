@@ -12,6 +12,7 @@ import fs from 'fs';
  *   - `includeExtensions`: An array of file extensions to include. For example: `['.ts', '.js']`.
  *   - `ignoreFiles`: An array of file names to ignore. For example: `['.eslintrc.js', 'tsconfig.json']`.
  *   - `depth`: The maximum depth to walk. A value of `1` will only include files directly within the `dir` directory. For example: `{ depth: 1 }`.
+ *   - `onlyFiles`: An array of file names to include. Only files matching these names will be included in the results. For example: `['package.json', 'tsconfig.json']`.
  * @returns - An array of file paths.
  *
  * @example
@@ -46,6 +47,15 @@ import fs from 'fs';
  *   depth: 1, // Only files directly in the directory
  * });
  * console.log(files);
+ * ```
+ *
+ * @example
+ * ```
+ * // Including only specific files:
+ * const configFiles = walkSync('./path/to/directory', {
+ *   onlyFiles: ['package.json', 'tsconfig.json'],
+ * });
+ * console.log(configFiles);
  * ```
  */
 export const walkSync = (
