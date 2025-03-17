@@ -113,4 +113,63 @@ describe('walkSync', () => {
       ]),
     );
   });
+
+  test('should filter by onlyFiles option', () => {
+    const files = walkSync(testDir, { onlyFiles: ['file1.txt'] });
+    expect(files).toEqual(expect.arrayContaining([path.join(testDir, 'file1.txt')]));
+    expect(files).not.toEqual(
+      expect.arrayContaining([
+        path.join(testDir, 'file2.txt'),
+        path.join(nestedDir, 'file3.txt'),
+        path.join(ignoredDir, 'file4.txt'),
+      ]),
+    );
+  });
+
+  test('should handle a file path instead of directory path', () => {
+    const filePath = path.join(testDir, 'file1.txt');
+    const files = walkSync(filePath);
+    expect(files).toEqual([filePath]);
+  });
+
+  test('should respect depth of 0', () => {
+    const files = walkSync(testDir, { depth: 0 });
+    expect(files).toEqual([]);
+  });
+
+  test('should combine multiple options correctly', () => {
+    fs.writeFileSync(path.join(testDir, 'file5.md'), 'content5');
+    fs.writeFileSync(path.join(nestedDir, 'file6.md'), 'content6');
+
+    const files = walkSync(testDir, {
+      ignoreFolders: ['ignored'],
+      includeExtensions: ['.md'],
+      ignoreFiles: ['file6.md'],
+      depth: 2,
+    });
+
+    expect(files).toEqual(expect.arrayContaining([path.join(testDir, 'file5.md')]));
+
+    expect(files).not.toEqual(
+      expect.arrayContaining([
+        path.join(testDir, 'file1.txt'),
+        path.join(testDir, 'file2.txt'),
+        path.join(nestedDir, 'file3.txt'),
+        path.join(ignoredDir, 'file4.txt'),
+        path.join(nestedDir, 'file6.md'),
+      ]),
+    );
+  });
+
+  test('should handle empty onlyFiles array', () => {
+    const files = walkSync(testDir, { onlyFiles: [] });
+    expect(files).toEqual(
+      expect.arrayContaining([
+        path.join(testDir, 'file1.txt'),
+        path.join(testDir, 'file2.txt'),
+        path.join(nestedDir, 'file3.txt'),
+        path.join(ignoredDir, 'file4.txt'),
+      ]),
+    );
+  });
 });

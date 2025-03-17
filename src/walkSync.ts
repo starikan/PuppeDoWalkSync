@@ -50,7 +50,13 @@ import fs from 'fs';
  */
 export const walkSync = (
   dir: string,
-  options: { ignoreFolders?: string[]; includeExtensions?: string[]; ignoreFiles?: string[]; depth?: number } = {
+  options: {
+    ignoreFolders?: string[];
+    includeExtensions?: string[];
+    ignoreFiles?: string[];
+    depth?: number;
+    onlyFiles?: string[];
+  } = {
     ignoreFolders: [],
     ignoreFiles: [],
   },
@@ -72,6 +78,12 @@ export const walkSync = (
     })
     .flat()
     .filter((v) => !options.ignoreFiles?.some((s) => v.endsWith(s)))
-    .filter((v) => (options.includeExtensions ? options.includeExtensions.includes(path.parse(v).ext) : true));
+    .filter((v) => (options.includeExtensions ? options.includeExtensions.includes(path.parse(v).ext) : true))
+    .filter((v) => {
+      if (options?.onlyFiles?.length) {
+        return options.onlyFiles.includes(path.basename(v));
+      }
+      return true;
+    });
   return dirs;
 };
