@@ -9,13 +9,7 @@ Synchronously walks through a directory and its subdirectories, returning an arr
 **Signature:**
 
 ```typescript
-walkSync: (dir: string, options?: {
-    ignoreFolders?: string[];
-    includeExtensions?: string[];
-    ignoreFiles?: string[];
-    depth?: number;
-    onlyFiles?: string[];
-}) => string[]
+walkSync: (dir: string, options?: WalkSyncOptions) => string[]
 ```
 
 ## Parameters
@@ -59,12 +53,12 @@ options
 
 </td><td>
 
-{ ignoreFolders?: string\[\]; includeExtensions?: string\[\]; ignoreFiles?: string\[\]; depth?: number; onlyFiles?: string\[\]; }
+WalkSyncOptions
 
 
 </td><td>
 
-_(Optional)_ Options for the walk.
+_(Optional)_ Configuration options object
 
 
 </td></tr>
@@ -73,26 +67,22 @@ _(Optional)_ Options for the walk.
 
 string\[\]
 
-- An array of file paths.
-
-## Remarks
-
-The `options` parameter can have the following properties: - `ignoreFolders`<!-- -->: An array of folder names to ignore. For example: `['node_modules', '.git']`<!-- -->. - `includeExtensions`<!-- -->: An array of file extensions to include. For example: `['.ts', '.js']`<!-- -->. - `ignoreFiles`<!-- -->: An array of file names to ignore. For example: `['.eslintrc.js', 'tsconfig.json']`<!-- -->. - `depth`<!-- -->: The maximum depth to walk. A value of `1` will only include files directly within the `dir` directory. For example: `{ depth: 1 }`<!-- -->. - `onlyFiles`<!-- -->: An array of file names to include. Only files matching these names will be included in the results. For example: `['package.json', 'tsconfig.json']`<!-- -->.
+An array of file paths found during the walk.
 
 ## Example 1
 
+Basic usage:
 
-```
-// Basic usage:
+```typescript
 const files = walkSync('./path/to/directory');
 console.log(files);
 ```
 
 ## Example 2
 
+Ignoring folders:
 
-```
-// Ignoring folders:
+```typescript
 const files = walkSync('./path/to/directory', {
   ignoreFolders: ['node_modules', 'dist'],
 });
@@ -101,9 +91,9 @@ console.log(files);
 
 ## Example 3
 
+Filtering by extension:
 
-```
-// Filtering by extension:
+```typescript
 const tsFiles = walkSync('./path/to/directory', {
   includeExtensions: ['.ts'],
 });
@@ -112,9 +102,9 @@ console.log(tsFiles);
 
 ## Example 4
 
+Limiting recursion depth:
 
-```
-// Limiting recursion depth:
+```typescript
 const files = walkSync('./path/to/directory', {
   depth: 1, // Only files directly in the directory
 });
@@ -123,9 +113,9 @@ console.log(files);
 
 ## Example 5
 
+Including only specific files:
 
-```
-// Including only specific files:
+```typescript
 const configFiles = walkSync('./path/to/directory', {
   onlyFiles: ['package.json', 'tsconfig.json'],
 });

@@ -3,6 +3,7 @@ const prettierPlugin = require('eslint-plugin-prettier');
 const securityPlugin = require('eslint-plugin-security');
 const tsPlugin = require('@typescript-eslint/eslint-plugin');
 const tsParser = require('@typescript-eslint/parser');
+const jsdocPlugin = require('eslint-plugin-jsdoc');
 
 const compat = new FlatCompat();
 
@@ -21,6 +22,7 @@ module.exports = [
       '@typescript-eslint': tsPlugin,
       prettier: prettierPlugin,
       security: securityPlugin,
+      jsdoc: jsdocPlugin,
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -30,6 +32,37 @@ module.exports = [
       'prettier/prettier': 'error',
       'security/detect-object-injection': 'off',
       'security/detect-non-literal-fs-filename': 'off',
+
+      // JSDoc rules to enforce function documentation
+      'jsdoc/require-jsdoc': [
+        'error',
+        {
+          require: {
+            FunctionDeclaration: true,
+            MethodDefinition: true,
+            ClassDeclaration: true,
+            ArrowFunctionExpression: true,
+            FunctionExpression: true,
+          },
+        },
+      ],
+      'jsdoc/require-description': [
+        'error',
+        {
+          contexts: [
+            'FunctionDeclaration',
+            'FunctionExpression',
+            'ArrowFunctionExpression',
+            'ClassDeclaration',
+            'ClassExpression',
+            'MethodDefinition',
+          ],
+        },
+      ],
+      'jsdoc/require-param': 'error',
+      'jsdoc/require-param-description': 'error',
+      'jsdoc/require-returns': 'error',
+      'jsdoc/require-returns-description': 'error',
     },
   },
   {

@@ -2,29 +2,53 @@ import path from 'path';
 import fs from 'fs';
 
 /**
+ * Options for the walkSync function
+ */
+export interface WalkSyncOptions {
+  /**
+   * Array of folder names to ignore (e.g., `['node_modules', '.git']`)
+   */
+  ignoreFolders?: string[];
+
+  /**
+   * Array of file extensions to include (e.g., `['.ts', '.js']`)
+   */
+  includeExtensions?: string[];
+
+  /**
+   * Array of file names to ignore (e.g., `['.eslintrc.js']`)
+   */
+  ignoreFiles?: string[];
+
+  /**
+   * Maximum depth to walk (`1` = only files in the immediate directory)
+   */
+  depth?: number;
+
+  /**
+   * Array of specific file names to include
+   */
+  onlyFiles?: string[];
+}
+
+/**
  * Synchronously walks through a directory and its subdirectories, returning an array of file paths.
  *
  * @public
  * @param dir - The directory to start walking from.
- * @param options - Options for the walk.
- * @remarks The `options` parameter can have the following properties:
- *   - `ignoreFolders`: An array of folder names to ignore. For example: `['node_modules', '.git']`.
- *   - `includeExtensions`: An array of file extensions to include. For example: `['.ts', '.js']`.
- *   - `ignoreFiles`: An array of file names to ignore. For example: `['.eslintrc.js', 'tsconfig.json']`.
- *   - `depth`: The maximum depth to walk. A value of `1` will only include files directly within the `dir` directory. For example: `{ depth: 1 }`.
- *   - `onlyFiles`: An array of file names to include. Only files matching these names will be included in the results. For example: `['package.json', 'tsconfig.json']`.
- * @returns - An array of file paths.
+ * @param options - Configuration options object
+ * @returns An array of file paths found during the walk.
  *
  * @example
- * ```
- * // Basic usage:
+ * Basic usage:
+ * ```typescript
  * const files = walkSync('./path/to/directory');
  * console.log(files);
  * ```
  *
  * @example
- * ```
- * // Ignoring folders:
+ * Ignoring folders:
+ * ```typescript
  * const files = walkSync('./path/to/directory', {
  *   ignoreFolders: ['node_modules', 'dist'],
  * });
@@ -32,8 +56,8 @@ import fs from 'fs';
  * ```
  *
  * @example
- * ```
- * // Filtering by extension:
+ * Filtering by extension:
+ * ```typescript
  * const tsFiles = walkSync('./path/to/directory', {
  *   includeExtensions: ['.ts'],
  * });
@@ -41,8 +65,8 @@ import fs from 'fs';
  * ```
  *
  * @example
- * ```
- * // Limiting recursion depth:
+ * Limiting recursion depth:
+ * ```typescript
  * const files = walkSync('./path/to/directory', {
  *   depth: 1, // Only files directly in the directory
  * });
@@ -50,8 +74,8 @@ import fs from 'fs';
  * ```
  *
  * @example
- * ```
- * // Including only specific files:
+ * Including only specific files:
+ * ```typescript
  * const configFiles = walkSync('./path/to/directory', {
  *   onlyFiles: ['package.json', 'tsconfig.json'],
  * });
@@ -60,13 +84,7 @@ import fs from 'fs';
  */
 export const walkSync = (
   dir: string,
-  options: {
-    ignoreFolders?: string[];
-    includeExtensions?: string[];
-    ignoreFiles?: string[];
-    depth?: number;
-    onlyFiles?: string[];
-  } = {
+  options: WalkSyncOptions = {
     ignoreFolders: [],
     ignoreFiles: [],
   },

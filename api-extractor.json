@@ -18,5 +18,11 @@
   "newlineKind": "lf",
   "compiler": {
     "tsconfigFilePath": "./tsconfig.json"
+  },
+  "tsdocMetadata": {
+    "enabled": true
+  },
+  "messages": {
+    "extractorMessageReporting": {}
   }
 }
