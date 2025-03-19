@@ -8,6 +8,7 @@ module.exports = {
   testMatch: ['<rootDir>/src.tests/**/*.+(ts|tsx)'],
   collectCoverage: true,
   collectCoverageFrom: ['./src/**/*.ts'],
+  coverageReporters: ['json', 'lcov', 'text', 'clover', 'json-summary'],
   transform: {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',

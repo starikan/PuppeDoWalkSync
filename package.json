@@ -6,7 +6,8 @@
   "typings": "./dist/index.d.ts",
   "files": [
     "./dist/index.js",
-    "./dist/index.d.ts"
+    "./dist/index.d.ts",
+    "./dist/types"
   ],
   "author": "Starodubov Sergey <4analit@gmail.com>",
   "license": "ISC",
@@ -37,10 +38,11 @@
   "scripts": {
     "build": "webpack && api-extractor run --local",
     "watch": "webpack --watch",
-    "check": "npm run build && npm run lint && npm test",
+    "check": "npm run build && npm run lint && npm test && npm run docs",
     "prepublishOnly": "npm install --force && npm run check",
     "lint": "eslint",
-    "test": "jest",
+    "test": "jest --coverage && npm run generate-badge",
+    "generate-badge": "node ./scripts/generate-coverage-badge.js",
     "docs:extract": "api-extractor run",
     "docs:generate": "api-documenter markdown -i ./temp -o ./docs",
     "docs": "npm run docs:extract && npm run docs:generate"

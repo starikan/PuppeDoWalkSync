@@ -2,6 +2,8 @@
 
 Synchronously walks through a directory and its subdirectories, returning an array of file paths.
 
+![Coverage](./badges/coverage.svg)
+
 ## Installation
 
 ```bash
