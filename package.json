@@ -40,7 +40,10 @@
     "check": "npm run build && npm run lint && npm test",
     "prepublishOnly": "npm install --force && npm run check",
     "lint": "eslint",
-    "test": "jest"
+    "test": "jest",
+    "docs:extract": "api-extractor run",
+    "docs:generate": "api-documenter markdown -i ./temp -o ./docs",
+    "docs": "npm run docs:extract && npm run docs:generate"
   },
   "devDependencies": {
     "@babel/cli": "7.26.4",
@@ -49,7 +52,8 @@
     "@babel/preset-env": "7.26.9",
     "@babel/preset-typescript": "7.26.0",
     "@eslint/eslintrc": "3.3.0",
-    "@microsoft/api-extractor": "^7.52.1",
+    "@microsoft/api-documenter": "7.25.1",
+    "@microsoft/api-extractor": "7.52.1",
     "@types/jest": "29.5.14",
     "@types/node": "22.13.10",
     "@types/webpack-env": "1.18.8",

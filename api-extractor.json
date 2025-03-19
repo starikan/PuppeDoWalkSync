@@ -7,11 +7,13 @@
     "reportFolder": "./dist"
   },
   "docModel": {
-    "enabled": true
+    "enabled": true,
+    "apiJsonFilePath": "./temp/<unscopedPackageName>.api.json"
   },
   "dtsRollup": {
     "enabled": true,
-    "untrimmedFilePath": "./dist/index.d.ts"
+    "untrimmedFilePath": "./dist/types/index-full.d.ts",
+    "publicTrimmedFilePath": "./dist/types/index.d.ts"
   },
   "newlineKind": "lf",
   "compiler": {
