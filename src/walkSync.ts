@@ -2,7 +2,12 @@ import path from 'path';
 import fs from 'fs';
 
 /**
- * Options for the walkSync function
+ * Options for configuring the walkSync function behavior.
+ *
+ * @remarks
+ * This interface provides configuration options for the {@link walkSync} function.
+ *
+ * @public
  */
 export interface WalkSyncOptions {
   /**
@@ -36,7 +41,7 @@ export interface WalkSyncOptions {
  *
  * @public
  * @param dir - The directory to start walking from.
- * @param options - Configuration options object
+ * @param options - Configuration options. See {@link WalkSyncOptions} for details.
  * @returns An array of file paths found during the walk.
  *
  * @example

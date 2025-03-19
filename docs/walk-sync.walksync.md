@@ -53,12 +53,12 @@ options
 
 </td><td>
 
-WalkSyncOptions
+[WalkSyncOptions](./walk-sync.walksyncoptions.md)
 
 
 </td><td>
 
-_(Optional)_ Configuration options object
+_(Optional)_ Configuration options. See [WalkSyncOptions](./walk-sync.walksyncoptions.md) for details.
 
 
 </td></tr>

@@ -1,3 +1,3 @@
-import { walkSync } from './src/walkSync';
+import { walkSync, WalkSyncOptions } from './src/walkSync';
 
-export { walkSync };
+export { walkSync, WalkSyncOptions };

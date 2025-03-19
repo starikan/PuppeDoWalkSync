@@ -29,3 +29,29 @@ Synchronously walks through a directory and its subdirectories, returning an arr
 
 </td></tr>
 </tbody></table>
+
+## Interfaces
+
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[WalkSyncOptions](./walk-sync.walksyncoptions.md)
+
+
+</td><td>
+
+Options for configuring the walkSync function behavior.
+
+
+</td></tr>
+</tbody></table>
