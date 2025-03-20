@@ -10,6 +10,11 @@ on:
         description: 'Type "RELEASE" to confirm publishing to npm'
         required: true
 
+# Add permissions for the GITHUB_TOKEN
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -59,10 +64,10 @@ jobs:
             exit 1
           fi
 
-      - name: Publish to NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to NPM
+      #   run: npm publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
