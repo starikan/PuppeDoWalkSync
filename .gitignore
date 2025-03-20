@@ -5,3 +5,4 @@
 /temp
 # Don't ignore badges directory
 !/badges/
+.husky/_

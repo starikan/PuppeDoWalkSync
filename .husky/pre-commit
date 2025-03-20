@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Get current branch
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Only run checks on master branch
+if [ "$BRANCH" = "master" ]; then
+  echo "Committing to master branch, running checks..."
+
+  # Save the list of untracked files before running checks
+  UNTRACKED_BEFORE=$(git ls-files --others --exclude-standard)
+
+  # Run npm check script
+  npm run check
+
+  # If the check fails, prevent the commit
+  if [ $? -ne 0 ]; then
+    echo "❌ Checks failed. Please fix the issues before committing to master."
+    exit 1
+  fi
+
+  # Get the list of untracked files after running checks
+  UNTRACKED_AFTER=$(git ls-files --others --exclude-standard)
+
+  # Check if there are new untracked files
+  NEW_UNTRACKED=$(comm -13 <(echo "$UNTRACKED_BEFORE" | sort) <(echo "$UNTRACKED_AFTER" | sort))
+
+  if [ -n "$NEW_UNTRACKED" ]; then
+    echo "❌ New files were generated during the check process but are not included in the commit:"
+    echo "$NEW_UNTRACKED"
+    echo "Please add these files to your commit or add them to .gitignore"
+    exit 1
+  fi
+
+  echo "✅ All checks passed!"
+fi
+
+# Exit with success status
+exit 0

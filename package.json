@@ -48,7 +48,8 @@
     "docs": "npm run docs:extract && npm run docs:generate",
     "pack:preview": "npm pack --dry-run",
     "release": "node scripts/release.js",
-    "release:generate-notes": "node ./scripts/generate-release-notes.js"
+    "release:generate-notes": "node ./scripts/generate-release-notes.js",
+    "prepare": "node -e \"try { require('fs').accessSync('.git', require('fs').constants.F_OK); process.exit(0); } catch (e) { process.exit(1); }\" && husky install || echo 'Skipping husky installation (not a git repository)'"
   },
   "devDependencies": {
     "@babel/cli": "7.26.4",
@@ -85,6 +86,7 @@
     "ts-loader": "9.5.2",
     "ts-node": "10.9.2",
     "typescript": "5.8.2",
+    "husky": "8.0.0",
     "webpack": "5.98.0",
     "webpack-cli": "6.0.1"
   }
