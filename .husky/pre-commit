@@ -4,9 +4,9 @@
 # Get current branch
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# Only run checks on master branch
-if [ "$BRANCH" = "master" ]; then
-  echo "Committing to master branch, running checks..."
+# Only run checks on main branch
+if [ "$BRANCH" = "main" ]; then
+  echo "Committing to main branch, running checks..."
 
   # Save the list of untracked files before running checks
   UNTRACKED_BEFORE=$(git ls-files --others --exclude-standard)
@@ -16,7 +16,7 @@ if [ "$BRANCH" = "master" ]; then
 
   # If the check fails, prevent the commit
   if [ $? -ne 0 ]; then
-    echo "❌ Checks failed. Please fix the issues before committing to master."
+    echo "❌ Checks failed. Please fix the issues before committing to main."
     exit 1
   fi
 
