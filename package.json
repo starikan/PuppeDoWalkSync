@@ -37,18 +37,17 @@
   ],
   "scripts": {
     "build": "webpack",
-    "watch": "webpack --watch",
+    "build:watch": "webpack --watch",
     "check": "npm run build && npm run lint && npm test && npm run docs",
-    "prepublishOnly": "npm install --force && npm run check",
+    "prepublishOnly": "npm install && npm run check",
     "lint": "eslint",
-    "test": "jest --coverage && npm run generate-badge",
-    "generate-badge": "node ./scripts/generate-coverage-badge.js",
+    "test": "jest --coverage && npm run test:generate-badge",
+    "test:generate-badge": "node ./scripts/generate-coverage-badge.js",
     "docs:extract": "api-extractor run --local",
     "docs:generate": "api-documenter markdown -i ./temp -o ./docs",
     "docs": "npm run docs:extract && npm run docs:generate",
     "pack:preview": "npm pack --dry-run",
     "release": "node scripts/release.js",
-    "release:generate-notes": "node ./scripts/generate-release-notes.js",
     "prepare": "node -e \"try { require('fs').accessSync('.git', require('fs').constants.F_OK); process.exit(0); } catch (e) { process.exit(1); }\" && husky install || echo 'Skipping husky installation (not a git repository)'"
   },
   "devDependencies": {
