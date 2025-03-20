@@ -1,4 +1,4 @@
 {
   "git.terminalAuthentication": true,
-  "git.useIntegratedTerminal": true
+  "git.terminalGitEditor": true
 }
