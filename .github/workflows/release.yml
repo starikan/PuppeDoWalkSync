@@ -33,16 +33,17 @@ jobs:
       - name: Check if user has permission
         id: check
         env:
-          RELEASE_AUTHORIZED_USERS: ${{ secrets.RELEASE_AUTHORIZED_USERS }}
+          RELEASE_AUTHORIZED_USERS: ${{ secrets.RELEASE_AUTHORIZED_USERS || vars.RELEASE_AUTHORIZED_USERS }}
         run: |
           # Check if the current user is authorized
           if [[ -z "$RELEASE_AUTHORIZED_USERS" ]]; then
-            echo "Error: RELEASE_AUTHORIZED_USERS secret is not set."
-            # If the secret is not set, throw an error
+            echo "Error: RELEASE_AUTHORIZED_USERS is not set."
+            echo "Please set it as a repository secret or variable with a comma-separated list of usernames."
+            # If the value is not set, throw an error
             exit 1
           fi
 
-          # Example format for RELEASE_AUTHORIZED_USERS secret: "username1,username2,username3"
+          # Example format for RELEASE_AUTHORIZED_USERS: "username1,username2,username3"
           if [[ $RELEASE_AUTHORIZED_USERS == *"${{ github.actor }}"* ]]; then
             echo "User ${{ github.actor }} is authorized to run the release workflow"
             echo "authorized=true" >> $GITHUB_OUTPUT
