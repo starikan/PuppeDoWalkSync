@@ -13,7 +13,21 @@ permissions:
   packages: write
 
 jobs:
+  check_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if branch is main
+        run: |
+          if [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+            echo "Error: This workflow can only be run from the main branch."
+            echo "Current branch: ${GITHUB_REF#refs/heads/}"
+            exit 1
+          else
+            echo "Running on main branch, proceeding with release."
+          fi
+
   check_permissions:
+    needs: check_branch
     runs-on: ubuntu-latest
     steps:
       - name: Check if user has permission
@@ -49,15 +63,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "18"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: npm ci --force
 
       - name: Check package
         run: npm run check
-
 
   publish_npm:
     needs: build
