@@ -2,7 +2,9 @@
 
 Synchronously walks through a directory and its subdirectories, returning an array of file paths.
 
-![Coverage](./badges/coverage.svg)
+![Coverage](https://raw.githubusercontent.com/starikan/PuppeDoWalkSync/main/badges/coverage.svg)
+
+Repository: [https://github.com/starikan/PuppeDoWalkSync](https://github.com/starikan/PuppeDoWalkSync)
 
 ## Installation
 
@@ -28,7 +30,7 @@ console.log(files); // Output: array of file paths
 
 ## API
 
-[API Documentation](./docs/index.md)
+[API Documentation](https://github.com/starikan/PuppeDoWalkSync/blob/main/docs/index.md)
 
 ## License
 
