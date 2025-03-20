@@ -3,9 +3,6 @@ name: Release & Publish
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version to release (e.g., 1.2.3)'
-        required: true
       confirm:
         description: 'Type "RELEASE" to confirm publishing to npm'
         required: true
@@ -58,17 +55,23 @@ jobs:
       - name: Install dependencies
         run: npm ci --force
 
-      - name: Build package
-        run: npm run build
+      - name: Check package
+        run: npm run check
 
-      - name: Format version
-        id: format
+
+  publish_npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get version from package.json
+        id: package_version
         run: |
-          VERSION="${{ github.event.inputs.version }}"
-          if [[ ! $VERSION =~ ^v ]]; then
-            VERSION="v$VERSION"
-          fi
+          VERSION="v$(node -p "require('./package.json').version")"
           echo "FORMATTED_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Using version $VERSION from package.json"
 
       - name: Check release notes file
         id: check_notes
@@ -82,30 +85,6 @@ jobs:
             exit 1
           fi
 
-      - name: Validate package version
-        run: |
-          PACKAGE_VERSION="v$(node -p "require('./package.json').version")"
-          if [ "$PACKAGE_VERSION" != "${{ env.FORMATTED_VERSION }}" ]; then
-            echo "Error: Requested version (${{ env.FORMATTED_VERSION }}) does not match package.json version ($PACKAGE_VERSION)"
-            exit 1
-          fi
-
-  publish_npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install dependencies
-        run: npm ci --force
-
       - name: Publish to NPM
         run: npm publish
         env:
@@ -118,16 +97,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set formatted version
+      - name: Get version from package.json
         run: |
-          VERSION="${{ github.event.inputs.version }}"
-          if [[ ! $VERSION =~ ^v ]]; then
-            VERSION="v$VERSION"
-          fi
+          VERSION="v$(node -p "require('./package.json').version")"
           echo "FORMATTED_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Set notes file path
-        run: echo "NOTES_FILE=releases/${{ env.FORMATTED_VERSION }}.txt" >> $GITHUB_ENV
+      - name: Check release notes file
+        id: check_notes
+        run: |
+          if [ -f "releases/${{ env.FORMATTED_VERSION }}.txt" ]; then
+            echo "NOTES_FILE=releases/${{ env.FORMATTED_VERSION }}.txt" >> $GITHUB_ENV
+            echo "NOTES_EXIST=true" >> $GITHUB_OUTPUT
+          else
+            echo "No release notes file found at releases/${{ env.FORMATTED_VERSION }}.txt"
+            echo "NOTES_EXIST=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
