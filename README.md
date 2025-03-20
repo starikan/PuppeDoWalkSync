@@ -4,8 +4,6 @@ Synchronously walks through a directory and its subdirectories, returning an arr
 
 ![Coverage](https://raw.githubusercontent.com/starikan/PuppeDoWalkSync/main/badges/coverage.svg)
 
-Repository: [https://github.com/starikan/PuppeDoWalkSync](https://github.com/starikan/PuppeDoWalkSync)
-
 ## Installation
 
 ```bash
