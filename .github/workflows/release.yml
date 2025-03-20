@@ -16,7 +16,33 @@ permissions:
   packages: write
 
 jobs:
+  check_permissions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if user has permission
+        id: check
+        env:
+          RELEASE_AUTHORIZED_USERS: ${{ secrets.RELEASE_AUTHORIZED_USERS }}
+        run: |
+          # Check if the current user is authorized
+          if [[ -z "$RELEASE_AUTHORIZED_USERS" ]]; then
+            echo "Error: RELEASE_AUTHORIZED_USERS secret is not set."
+            # If the secret is not set, throw an error
+            exit 1
+          fi
+
+          # Example format for RELEASE_AUTHORIZED_USERS secret: "username1,username2,username3"
+          if [[ $RELEASE_AUTHORIZED_USERS == *"${{ github.actor }}"* ]]; then
+            echo "User ${{ github.actor }} is authorized to run the release workflow"
+            echo "authorized=true" >> $GITHUB_OUTPUT
+          else
+            echo "User ${{ github.actor }} is not authorized to run the release workflow"
+            echo "authorized=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
   build:
+    needs: check_permissions
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.confirm == 'RELEASE' }}
     steps:
@@ -64,10 +90,44 @@ jobs:
             exit 1
           fi
 
-      # - name: Publish to NPM
-      #   run: npm publish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish_npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci --force
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  create_release:
+    needs: [build, publish_npm]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set formatted version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          if [[ ! $VERSION =~ ^v ]]; then
+            VERSION="v$VERSION"
+          fi
+          echo "FORMATTED_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Set notes file path
+        run: echo "NOTES_FILE=releases/${{ env.FORMATTED_VERSION }}.txt" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
