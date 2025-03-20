@@ -1,0 +1,19 @@
+# PuppeDoWalkSync v1.0.6 Release Notes
+
+## Overview
+This release focuses on improving the development workflow, enhancing CI/CD automation, and streamlining the project configuration.
+
+## GitHub Actions & CI/CD Improvements
+- Added new pull request validation workflow to ensure code quality before merging
+- Improved testing system with streamlined check commands
+- Added safeguards to prevent release workflow from running on non-main branches
+- Streamlined the release process with better package verification
+- Improved NPM publishing with proper permission checks
+
+## Developer Experience
+- Improved npm scripts with clearer naming and more consistent behavior
+- Added pre-commit hooks to automatically run code quality checks before committing
+
+## Documentation & Configuration
+- Added repository link to README for easier project discovery and access
+
