@@ -1,0 +1,18 @@
+## v1.0.5
+- **New Feature**: Added `onlyFiles` option to `walkSync`, allowing users to filter results to include only files and exclude directories (`3f040a4`).
+- **Robustness**: Enhanced `walkSync` to gracefully handle invalid or malformed options, improving reliability (`4244fcb`).
+- **Testing**:
+  - Added comprehensive test suite for `walkSync`, covering nested directories, edge cases, and new options (`2b86b30`, `a778717`).
+  - Introduced automated testing via GitHub Actions on push and pull requests for consistent quality (`13a9c0b`).
+- **Documentation**:
+  - Generated detailed API documentation for `walkSync` and updated README with practical usage examples (`b6aeb9e`).
+  - Enhanced `walkSync` with detailed JSDoc comments and a refined options interface for better usability (`2261a58`).
+  - Added documentation files to `package.json` for inclusion in the distribution (`dcf6e2b`).
+- **Code Quality**:
+  - Refactored `walkSync` configuration and introduced a detailed `WalkSyncOptions` interface, now in a separate file for clarity (`c52c073`, `aa10b3d`).
+- **Build & CI Improvements**:
+  - Updated Node.js versions in GitHub Actions workflow and enforced dependency installation (`ab2b027`).
+  - Updated typings path in `package.json` and added a preview packing script for easier testing (`54e8eb5`).
+  - Improved build scripts to support local extraction (`2261a58`).
+  - Added test coverage badge to README and enhanced Jest configuration (`f71d559`).
+- **Maintenance**: Updated packages to ensure compatibility and security (`d29de4b`).
