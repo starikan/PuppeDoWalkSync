@@ -126,7 +126,7 @@ async function release() {
     }
 
     // Generate release notes to latest.txt
-    const latestNotesPath = path.resolve(releasesDir, `${newVersion}.txt`);
+    const latestNotesPath = path.resolve(releasesDir, `v${newVersion}.txt`);
     console.log('Generating release notes...');
     generateReleaseNotes({ outputFile: latestNotesPath });
 
