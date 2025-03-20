@@ -20,7 +20,7 @@ const files = walkSync('./my-directory', {
   includeExtensions: ['.ts', '.js'], // Optional: only include files with these extensions
   ignoreFiles: ['.eslintrc.js', 'tsconfig.json'], // Optional: specific files to exclude
   depth: 2, // Optional: limits the recursion depth
-  onlyFiles: ['package.json', 'index.ts'] // Optional: include only specific files
+  onlyFiles: ['package.json', 'index.ts'], // Optional: include only specific files
 });
 
 console.log(files); // Output: array of file paths
