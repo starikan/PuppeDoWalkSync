@@ -76,6 +76,9 @@ jobs:
   publish_npm:
     needs: build
     runs-on: ubuntu-latest
+    outputs:
+      formatted_version: ${{ env.FORMATTED_VERSION }}
+      notes_file: ${{ env.NOTES_FILE }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -114,34 +117,17 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create_release:
-    needs: [build, publish_npm]
+    needs: publish_npm
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Get version from package.json
-        run: |
-          VERSION="v$(node -p "require('./package.json').version")"
-          echo "FORMATTED_VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Check release notes file
-        id: check_notes
-        run: |
-          if [ -f "releases/${{ env.FORMATTED_VERSION }}.txt" ]; then
-            echo "NOTES_FILE=releases/${{ env.FORMATTED_VERSION }}.txt" >> $GITHUB_ENV
-            echo "NOTES_EXIST=true" >> $GITHUB_OUTPUT
-          else
-            echo "No release notes file found at releases/${{ env.FORMATTED_VERSION }}.txt"
-            echo "NOTES_EXIST=false" >> $GITHUB_OUTPUT
-            exit 1
-          fi
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ env.FORMATTED_VERSION }}
-          body_path: ${{ env.NOTES_FILE }}
-          tag_name: ${{ env.FORMATTED_VERSION }}
+          name: Release ${{ needs.publish_npm.outputs.formatted_version }}
+          body_path: ${{ needs.publish_npm.outputs.notes_file }}
+          tag_name: ${{ needs.publish_npm.outputs.formatted_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
