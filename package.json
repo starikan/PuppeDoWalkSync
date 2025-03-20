@@ -9,6 +9,10 @@
     "./dist/index.js",
     "./dist/walk-sync.d.ts"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/starikan/PuppeDoWalkSync.git"
+  },
   "author": "Starodubov Sergey <4analit@gmail.com>",
   "license": "ISC",
   "keywords": [
