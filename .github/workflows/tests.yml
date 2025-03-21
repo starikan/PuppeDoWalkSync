@@ -37,7 +37,8 @@ jobs:
         git ls-files --others --exclude-standard > untracked_after.txt
 
         # Find new files (files in after but not in before)
-        NEW_FILES=$(comm -13 untracked_before.txt untracked_after.txt)
+        # Exclude the temporary tracking files from the comparison
+        NEW_FILES=$(comm -13 untracked_before.txt untracked_after.txt | grep -v "untracked_\(before\|after\)\.txt")
 
         # Check if there are any new untracked files
         if [ -n "$NEW_FILES" ]; then
@@ -48,3 +49,6 @@ jobs:
         else
           echo "✅ No new untracked files were generated during checks"
         fi
+
+        # Clean up temporary files
+        rm untracked_before.txt untracked_after.txt
