@@ -54,10 +54,39 @@ jobs:
             exit 1
           fi
 
-  build:
+  get_version_info:
     needs: check_permissions
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.confirm == 'RELEASE' }}
+    outputs:
+      formatted_version: ${{ steps.package_version.outputs.formatted_version }}
+      notes_file: ${{ steps.check_notes.outputs.notes_file }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get version from package.json
+        id: package_version
+        run: |
+          VERSION="v$(node -p "require('./package.json').version")"
+          echo "formatted_version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using version $VERSION from package.json"
+
+      - name: Check release notes file
+        id: check_notes
+        run: |
+          if [ -f "releases/${{ steps.package_version.outputs.formatted_version }}.txt" ]; then
+            echo "notes_file=releases/${{ steps.package_version.outputs.formatted_version }}.txt" >> $GITHUB_OUTPUT
+            echo "NOTES_EXIST=true" >> $GITHUB_OUTPUT
+          else
+            echo "No release notes file found at releases/${{ steps.package_version.outputs.formatted_version }}.txt"
+            echo "NOTES_EXIST=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+  build:
+    needs: get_version_info
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -75,11 +104,8 @@ jobs:
         run: npm run check
 
   publish_npm:
-    needs: build
+    needs: [build, get_version_info]
     runs-on: ubuntu-latest
-    outputs:
-      formatted_version: ${{ env.FORMATTED_VERSION }}
-      notes_file: ${{ env.NOTES_FILE }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -90,25 +116,6 @@ jobs:
           node-version: "18"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Get version from package.json
-        id: package_version
-        run: |
-          VERSION="v$(node -p "require('./package.json').version")"
-          echo "FORMATTED_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Using version $VERSION from package.json"
-
-      - name: Check release notes file
-        id: check_notes
-        run: |
-          if [ -f "releases/${{ env.FORMATTED_VERSION }}.txt" ]; then
-            echo "NOTES_FILE=releases/${{ env.FORMATTED_VERSION }}.txt" >> $GITHUB_ENV
-            echo "NOTES_EXIST=true" >> $GITHUB_OUTPUT
-          else
-            echo "No release notes file found at releases/${{ env.FORMATTED_VERSION }}.txt"
-            echo "NOTES_EXIST=false" >> $GITHUB_OUTPUT
-            exit 1
-          fi
-
       - name: Install dependencies
         run: npm ci
 
@@ -118,7 +125,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create_release:
-    needs: publish_npm
+    needs: [publish_npm, get_version_info]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -127,8 +134,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ needs.publish_npm.outputs.formatted_version }}
-          body_path: ${{ needs.publish_npm.outputs.notes_file }}
-          tag_name: ${{ needs.publish_npm.outputs.formatted_version }}
+          name: Release ${{ needs.get_version_info.outputs.formatted_version }}
+          body_path: ${{ needs.get_version_info.outputs.notes_file }}
+          tag_name: ${{ needs.get_version_info.outputs.formatted_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
