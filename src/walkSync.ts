@@ -43,15 +43,6 @@ import { WalkSyncOptions } from './types/WalkSyncOptions';
  * });
  * console.log(files);
  * ```
- *
- * @example
- * Including only specific files:
- * ```typescript
- * const configFiles = walkSync('./path/to/directory', {
- *   onlyFiles: ['package.json', 'tsconfig.json'],
- * });
- * console.log(configFiles);
- * ```
  */
 export const walkSync = (
   dir: string,
