@@ -27,5 +27,26 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Capture untracked files before checks
+      run: git ls-files --others --exclude-standard > untracked_before.txt
+
     - name: Run checks
       run: npm run check
+
+    - name: Check for new untracked files
+      run: |
+        # Create list of untracked files after checks
+        git ls-files --others --exclude-standard > untracked_after.txt
+
+        # Find new files (files in after but not in before)
+        NEW_FILES=$(comm -13 untracked_before.txt untracked_after.txt)
+
+        # Check if there are any new untracked files
+        if [ -n "$NEW_FILES" ]; then
+          echo "❌ New files were generated during the check process but are not included in the PR:"
+          echo "$NEW_FILES"
+          echo "Please add these files to your PR or add them to .gitignore"
+          exit 1
+        else
+          echo "✅ No new untracked files were generated during checks"
+        fi
