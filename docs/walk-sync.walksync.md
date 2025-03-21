@@ -111,14 +111,3 @@ const files = walkSync('./path/to/directory', {
 console.log(files);
 ```
 
-## Example 5
-
-Including only specific files:
-
-```typescript
-const configFiles = walkSync('./path/to/directory', {
-  onlyFiles: ['package.json', 'tsconfig.json'],
-});
-console.log(configFiles);
-```
-

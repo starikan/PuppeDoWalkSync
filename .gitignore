@@ -6,3 +6,5 @@
 # Don't ignore badges directory
 !/badges/
 .husky/_
+untracked_before.txt
+untracked_after.txt
