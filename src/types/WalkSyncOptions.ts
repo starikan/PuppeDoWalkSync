@@ -32,4 +32,9 @@ export interface WalkSyncOptions {
    * Array of specific file names to include
    */
   onlyFiles?: string[];
+
+  /**
+   * Return full paths instead of relative paths
+   */
+  fullPathReturn?: boolean;
 }

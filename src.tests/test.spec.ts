@@ -795,4 +795,29 @@ describe('walkSync', () => {
     // With depth 0, we should find no files
     expect(files).toEqual([]);
   });
+
+  test('should return relative paths when fullPathReturn is false', () => {
+    const files = walkSync(testDir, { fullPathReturn: false });
+    const relativeFiles = files.map((file) => path.relative(testDir, file));
+    expect(relativeFiles).toEqual(
+      expect.arrayContaining([
+        'file1.txt',
+        'file2.txt',
+        path.join('nested', 'file3.txt'),
+        path.join('ignored', 'file4.txt'),
+      ]),
+    );
+  });
+
+  test('should return full paths when fullPathReturn is true', () => {
+    const files = walkSync(testDir, { fullPathReturn: true });
+    expect(files).toEqual(
+      expect.arrayContaining([
+        path.join(testDir, 'file1.txt'),
+        path.join(testDir, 'file2.txt'),
+        path.join(nestedDir, 'file3.txt'),
+        path.join(ignoredDir, 'file4.txt'),
+      ]),
+    );
+  });
 });

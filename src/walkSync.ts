@@ -58,6 +58,7 @@ export const walkSync = (
   options: WalkSyncOptions = {
     ignoreFolders: [],
     ignoreFiles: [],
+    fullPathReturn: true,
   },
 ): string[] => {
   // Handle invalid directory input
@@ -112,6 +113,8 @@ export const walkSync = (
         return opts.onlyFiles.includes(path.basename(v));
       }
       return true;
-    });
+    })
+    .filter((v) => (opts.fullPathReturn ? v : path.join(dir, v)));
+
   return dirs;
 };
