@@ -1,0 +1,15 @@
+# Release HEAD
+
+## New Features
+- Added `fullPathReturn` option to `walkSync`, allowing users to return full paths instead of relative paths. Updated tests to ensure proper path handling.
+
+## Documentation Updates
+- Included an example for specifying files in the `walkSync` documentation to improve clarity and usability.
+
+## CI/CD Improvements
+- Optimized CI workflows for better performance and reliability.
+- Updated Node.js version to 22 in workflows and enabled tests to run on all branches.
+- Refactored the release workflow to separate version information retrieval and build steps.
+
+## Repository Management
+- Added a `CODEOWNERS` file to define repository ownership and streamline collaboration.

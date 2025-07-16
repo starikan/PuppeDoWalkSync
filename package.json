@@ -1,6 +1,6 @@
 {
   "name": "@puppedo/walk-sync",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Synchronously walks through a directory and its subdirectories, returning an array of file paths.",
   "main": "./dist/index.js",
   "typings": "./dist/walk-sync.d.ts",
@@ -51,7 +51,7 @@
     "docs:generate": "api-documenter markdown -i ./temp -o ./docs",
     "docs": "npm run docs:extract && npm run docs:generate",
     "pack:preview": "npm pack --dry-run",
-    "release": "node scripts/release.js",
+    "release": "npm run prepublishOnly && node scripts/release.js",
     "prepare": "node -e \"try { require('fs').accessSync('.git', require('fs').constants.F_OK); process.exit(0); } catch (e) { process.exit(1); }\" && husky install || echo 'Skipping husky installation (not a git repository)'"
   },
   "devDependencies": {
