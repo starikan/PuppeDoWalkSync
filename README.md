@@ -21,6 +21,7 @@ const files = walkSync('./my-directory', {
   ignoreFiles: ['.eslintrc.js', 'tsconfig.json'], // Optional: specific files to exclude
   depth: 2, // Optional: limits the recursion depth
   onlyFiles: ['package.json', 'index.ts'], // Optional: include only specific files
+  fullPathReturn: true, // Optional: return full paths instead of relative paths
 });
 
 console.log(files); // Output: array of file paths
