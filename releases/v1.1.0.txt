@@ -1,4 +1,4 @@
-# Release HEAD
+# PuppeDoWalkSync v1.1.0 Release Notes
 
 ## New Features
 - Added `fullPathReturn` option to `walkSync`, allowing users to return full paths instead of relative paths. Updated tests to ensure proper path handling.
