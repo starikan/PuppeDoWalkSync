@@ -110,9 +110,6 @@ function updatePackageJson(version) {
 
 async function release() {
   try {
-    // Ensure we're on main branch and everything is up to date
-    execSync('git checkout main && git pull', { stdio: 'inherit' });
-
     // Get new version
     const newVersion = await promptForVersion();
 

@@ -60,6 +60,25 @@ _(Optional)_ Maximum depth to walk (`1` = only files in the immediate directory)
 </td></tr>
 <tr><td>
 
+[fullPathReturn?](./walk-sync.walksyncoptions.fullpathreturn.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Return full paths instead of relative paths
+
+
+</td></tr>
+<tr><td>
+
 [ignoreFiles?](./walk-sync.walksyncoptions.ignorefiles.md)
 
 
