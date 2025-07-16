@@ -35,7 +35,6 @@ This project uses a fully manual release process:
 
 ### Important Notes
 
-- No git tags are created automatically
 - Releases are only triggered manually via the GitHub Actions interface
 - Release notes must be reviewed and prepared before triggering the release
 - The release workflow will create a tag in GitHub when the release is published
