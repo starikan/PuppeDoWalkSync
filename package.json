@@ -7,6 +7,7 @@
   "files": [
     "./docs/**/*",
     "./dist/index.js",
+    "./dist/index.js.map",
     "./dist/walk-sync.d.ts"
   ],
   "repository": {
