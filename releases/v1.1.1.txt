@@ -1,0 +1,8 @@
+# Release HEAD
+
+## Other Changes
+
+- Add source map file to package.json files list (b248c3a)
+- Update .gitignore to include /.specstory and ensure proper newline formatting (88e0119)
+- Update RELEASE.md to clarify that no git tags are created automatically (#6) (418c46a)
+
